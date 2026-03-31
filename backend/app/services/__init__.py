@@ -1,4 +1,5 @@
 """Business logic services."""
 from .git_service import GitService
 from .package_service import PackageService
-# group_service and install_service will be added later
+from .group_service import GroupService
+from .install_service import InstallService
