@@ -42,7 +42,7 @@
           <el-form-item label="目标 IDE">
             <el-select v-model="installForm.target_ide" style="width: 100%">
               <el-option label="Qoder" value="qoder" />
-              <el-option label="Cursor" value="cursor" disabled />
+              <el-option label="Cursor" value="cursor" />
             </el-select>
           </el-form-item>
           <el-form-item label="安装范围">
