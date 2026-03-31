@@ -6,7 +6,7 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 
 from ..models import Installation, Group
-from ..installers import QoderInstaller
+from ..installers import QoderInstaller, CursorInstaller
 
 
 class InstallService:
@@ -16,6 +16,7 @@ class InstallService:
         self.db = db
         self.installers = {
             "qoder": QoderInstaller(),
+            "cursor": CursorInstaller(),
         }
 
     def install_group(
