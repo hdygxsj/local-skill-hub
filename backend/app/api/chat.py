@@ -1,15 +1,20 @@
-"""Chat API (placeholder)."""
-from fastapi import APIRouter
+"""Chat API with Agent."""
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
+from ..database import get_db
 from ..schemas import ChatMessage, ChatResponse
+from ..agent import Agent
 
 router = APIRouter()
 
 
 @router.post("/", response_model=ChatResponse)
-def chat(message: ChatMessage):
-    """Chat with Agent (placeholder)."""
+def chat(message: ChatMessage, db: Session = Depends(get_db)):
+    """Chat with Agent."""
+    agent = Agent(db)
+    result = agent.chat(message.message)
     return ChatResponse(
-        response="Agent 功能即将实现。目前请使用 API 直接操作。",
-        tool_calls=None
+        response=result["response"],
+        tool_calls=result.get("tool_calls")
     )
