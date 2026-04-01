@@ -8,7 +8,8 @@ AI IDE 的 Local Skill Hub，支持多 IDE (Cursor/Qoder) 的 Skill 托管和切
 - **Multi-IDE Support**: 支持 Qoder 和 Cursor
 - **Version Tracking**: Hub 内部版本号 + 真实版本号追踪
 - **Agent Integration**: 提供 CLI Skill 给 AI IDE Agent 使用
-- **Read-only GUI**: Web/Tauri 可视化界面查看状态
+- **Web GUI**: 现代化 Web 界面查看状态 (http://localhost:27842)
+- **Mac App**: Tauri 打包的桌面客户端
 
 ## Architecture
 
@@ -35,6 +36,8 @@ AI IDE 的 Local Skill Hub，支持多 IDE (Cursor/Qoder) 的 Skill 托管和切
 
 ## Installation
 
+### CLI
+
 ```bash
 # From source
 git clone https://github.com/easy-skills/easy-skills.git
@@ -42,6 +45,23 @@ cd easy-skills
 go install
 
 # Or download binary from releases
+```
+
+### Web UI
+
+```bash
+cd web
+npm install
+npm run dev
+# Open http://localhost:27842
+```
+
+### Mac App
+
+```bash
+cd src-tauri
+cargo build --release
+# Binary at target/release/easy-skills
 ```
 
 ## Quick Start
@@ -56,14 +76,8 @@ easy-skills list --target qoder
 # Show package details
 easy-skills info --name superpowers --target qoder
 
-# Install package to IDE
-easy-skills install --name superpowers --target qoder --ide qoder --scope user
-
 # Check installation status
 easy-skills status --ide qoder
-
-# Uninstall package
-easy-skills uninstall --name superpowers --target qoder --ide qoder --scope user
 ```
 
 ## CLI Commands
@@ -73,8 +87,6 @@ easy-skills uninstall --name superpowers --target qoder --ide qoder --scope user
 | `register` | 注册 Package 到 Hub |
 | `list` | 列出 Hub 中的 Packages |
 | `info` | 查看 Package 详细信息 |
-| `install` | 安装 Package 到 IDE |
-| `uninstall` | 从 IDE 卸载 Package |
 | `status` | 查看 IDE 中已安装的 Packages |
 
 ## Storage

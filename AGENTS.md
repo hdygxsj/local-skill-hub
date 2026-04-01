@@ -19,36 +19,23 @@ easy-skills status --ide cursor
 easy-skills list --target qoder
 ```
 
-### Install a Skill Package
-
-```bash
-# Install a package to Qoder
-easy-skills install --name <package-name> --target qoder --ide qoder --scope user
-
-# Install to project scope
-easy-skills install --name <package-name> --target qoder --ide qoder --scope project
-```
-
-### Uninstall a Skill Package
-
-```bash
-# Uninstall from Qoder
-easy-skills uninstall --name <package-name> --target qoder --ide qoder --scope user
-```
-
-### Register a New Package
+### Register a Package
 
 ```bash
 # Register a package from Git URL
-easy-skills register --name <package-name> --target qoder --source <git-url>
+easy-skills register --name superpowers --target qoder --source https://github.com/obra/superpowers
 ```
 
 ### View Package Details
 
 ```bash
 # Show package info including components
-easy-skills info --name <package-name> --target qoder
+easy-skills info --name superpowers --target qoder
 ```
+
+## Web Interface
+
+Access the web GUI at: http://localhost:27842
 
 ## Easy Skills Skill
 
