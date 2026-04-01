@@ -1,5 +1,4 @@
 package adapters
-package adapters
 
 import "github.com/easy-skills/easy-skills/pkg/types"
 
