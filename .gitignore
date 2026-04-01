@@ -1,2 +1,22 @@
+# IDE
 .idea
-.qoder
+.vscode
+*.swp
+*.swo
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+
+# Local skill hub data
+hub.db
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1 @@
+/tmp/superpowers/.qoder/agents/developer.md
