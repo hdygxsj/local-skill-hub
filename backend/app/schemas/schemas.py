@@ -1,13 +1,31 @@
 """Pydantic models for request/response validation."""
 from datetime import datetime
+from enum import Enum
 from typing import Optional, List
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+
+# Enums for validation
+class SourceType(str, Enum):
+    git = "git"
+    guide = "guide"
+    local = "local"
+
+
+class TargetIDE(str, Enum):
+    qoder = "qoder"
+    cursor = "cursor"
+
+
+class InstallScope(str, Enum):
+    user = "user"
+    project = "project"
 
 
 # Source schemas
 class SourceCreate(BaseModel):
-    type: str  # 'git' | 'guide' | 'local'
-    url_or_path: str
+    type: SourceType
+    url_or_path: str = Field(..., min_length=1)
 
 
 class SourceResponse(BaseModel):
@@ -22,8 +40,8 @@ class SourceResponse(BaseModel):
 
 # Package schemas
 class PackageCreate(BaseModel):
-    source_type: str  # 'git' | 'guide' | 'local'
-    url_or_path: str
+    source_type: SourceType
+    url_or_path: str = Field(..., min_length=1)
     name: Optional[str] = None
 
 
@@ -67,8 +85,8 @@ class GroupDetail(GroupResponse):
 # Installation schemas
 class InstallationCreate(BaseModel):
     group_id: int
-    target_ide: str  # 'qoder' | 'cursor'
-    install_scope: str  # 'user' | 'project'
+    target_ide: TargetIDE
+    install_scope: InstallScope
     install_path: Optional[str] = None  # Required for 'project' scope
 
 

@@ -1,14 +1,24 @@
 """FastAPI application entry point."""
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import init_db
 from .api import api_router
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan handler."""
+    init_db()
+    yield
+
+
 app = FastAPI(
     title="Local Skill Hub",
     description="AI IDE 技能包管理工具",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 # CORS middleware for frontend
@@ -22,12 +32,6 @@ app.add_middleware(
 
 # Register API routes
 app.include_router(api_router, prefix="/api")
-
-
-@app.on_event("startup")
-def startup():
-    """Initialize database on startup."""
-    init_db()
 
 
 @app.get("/")
