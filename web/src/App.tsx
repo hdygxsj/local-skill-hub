@@ -92,14 +92,29 @@ function App() {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900">Easy Skills Hub</h1>
-          <select 
-            value={target}
-            onChange={(e) => setTarget(e.target.value as 'qoder' | 'cursor')}
-            className="px-4 py-2 border border-gray-300 rounded-lg"
-          >
-            <option value="qoder">Qoder</option>
-            <option value="cursor">Cursor</option>
-          </select>
+          {/* IDE Selector - Segmented Control */}
+          <div className="inline-flex rounded-lg border border-gray-200 bg-gray-100 p-1">
+            <button
+              onClick={() => setTarget('qoder')}
+              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                target === 'qoder'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Qoder
+            </button>
+            <button
+              onClick={() => setTarget('cursor')}
+              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                target === 'cursor'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Cursor
+            </button>
+          </div>
         </div>
       </header>
 
