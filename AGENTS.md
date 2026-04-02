@@ -112,8 +112,6 @@ echo "Release version: $VERSION"
 - `0.1.5` → `0.2.0`：新增项目目录安装功能
 - `0.2.3` → `1.0.0`：完全重构数据库层、支持多 IDE
 
-### Release Flow
-
 ### npm Package Structure
 
 The `npm/` directory contains:
