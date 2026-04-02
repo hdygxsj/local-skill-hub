@@ -45,7 +45,7 @@ This will install the skill file to `~/.qoder/skills/easy-skills/`.
 
 1. Verify CLI installed: `which easy-skills`
 2. Check server running: `ps aux | grep easy-skills`
-3. Try restarting: `easy-skills serve`
+3. Try restarting: `easy-skills restart`
 
 ## Getting Help
 

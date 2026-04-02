@@ -732,6 +732,8 @@ function App() {
                   <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
                     <p className="text-gray-500"># Start GUI server</p>
                     <p className="text-orange-600">easy-skills serve</p>
+                    <p className="text-gray-500"># Restart server</p>
+                    <p className="text-orange-600">easy-skills restart</p>
                     <p className="text-gray-500"># Open http://localhost:27842</p>
                   </div>
                 </section>

@@ -155,6 +155,17 @@ AI Agent 会自动完成：
 | `info` | 查看 Package 详细信息 |
 | `status` | 查看 IDE 中已安装的 Packages |
 | `serve` | 启动 Web GUI 服务 (http://localhost:27842) |
+| `restart` | 重启 Web GUI 服务 |
+
+### 服务管理
+
+```bash
+easy-skills serve              # 启动服务
+easy-skills serve --port 27842 # 指定端口启动
+easy-skills restart            # 重启服务
+```
+
+服务启动后会生成 PID 文件 (`~/.easy-skills/easy-skills.pid`)，重启时会自动停止旧进程并启动新进程。
 
 ## 数据存储
 

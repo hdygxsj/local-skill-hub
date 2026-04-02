@@ -37,6 +37,21 @@ easy-skills info --name superpowers --target qoder
 
 Access the web GUI at: http://localhost:27842
 
+### Server Management
+
+```bash
+# Start the server
+easy-skills serve
+
+# Restart the server
+easy-skills restart
+
+# Check if server is running
+cat ~/.easy-skills/easy-skills.pid
+```
+
+The `restart` command will automatically stop the existing server and start a new one.
+
 ## Easy Skills Skill
 
 The `skills/easy-skills/SKILL.md` provides additional guidance for skill management.

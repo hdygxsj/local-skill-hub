@@ -6,12 +6,110 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"os/user"
+	"path/filepath"
+	"strconv"
+	"syscall"
 
 	"github.com/spf13/cobra"
 )
 
 var servePort string
 var serveDev bool
+
+// getPidFilePath returns the path to the PID file
+func getPidFilePath() (string, error) {
+	usr, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+	dir := filepath.Join(usr.HomeDir, ".easy-skills")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return "", err
+	}
+	return filepath.Join(dir, "easy-skills.pid"), nil
+}
+
+// writePidFile writes the current process PID to file
+func writePidFile() error {
+	pidPath, err := getPidFilePath()
+	if err != nil {
+		return fmt.Errorf("failed to get PID file path: %w", err)
+	}
+	pid := os.Getpid()
+	return os.WriteFile(pidPath, []byte(strconv.Itoa(pid)), 0644)
+}
+
+// readPidFile reads the PID from file
+func readPidFile() (int, error) {
+	pidPath, err := getPidFilePath()
+	if err != nil {
+		return 0, err
+	}
+	data, err := os.ReadFile(pidPath)
+	if err != nil {
+		return 0, err
+	}
+	return strconv.Atoi(string(data))
+}
+
+// removePidFile removes the PID file
+func removePidFile() error {
+	pidPath, err := getPidFilePath()
+	if err != nil {
+		return err
+	}
+	os.Remove(pidPath)
+	return nil
+}
+
+// isProcessRunning checks if a process with given PID is running
+func isProcessRunning(pid int) bool {
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return false
+	}
+	// Send signal 0 to check if process exists
+	err = process.Signal(syscall.Signal(0))
+	return err == nil
+}
+
+// stopProcess gracefully stops a process by PID
+func stopProcess(pid int) error {
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return fmt.Errorf("failed to find process: %w", err)
+	}
+	// Try graceful termination first
+	if err := process.Signal(syscall.SIGTERM); err != nil {
+		return fmt.Errorf("failed to send SIGTERM: %w", err)
+	}
+	// Wait for process to exit (max 5 seconds)
+	for i := 0; i < 50; i++ {
+		if !isProcessRunning(pid) {
+			return nil
+		}
+	}
+	// Force kill if still running
+	if err := process.Kill(); err != nil {
+		return fmt.Errorf("failed to kill process: %w", err)
+	}
+	return nil
+}
+
+// getCurrentExecutable returns the path to the current executable
+func getCurrentExecutable() (string, error) {
+	execPath, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+	// Resolve symlinks
+	realPath, err := filepath.EvalSymlinks(execPath)
+	if err != nil {
+		return execPath, nil
+	}
+	return realPath, nil
+}
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
@@ -20,10 +118,71 @@ var serveCmd = &cobra.Command{
 	Run:   runServe,
 }
 
+var restartCmd = &cobra.Command{
+	Use:   "restart",
+	Short: "Restart the Easy Skills Hub server",
+	Long:  "Stop the running server and start it again with the same parameters",
+	Run:   runRestart,
+}
+
 func init() {
 	rootCmd.AddCommand(serveCmd)
 	serveCmd.Flags().StringVar(&servePort, "port", "27842", "Port to listen on")
 	serveCmd.Flags().BoolVar(&serveDev, "dev", false, "Run in development mode with hot reload")
+
+	rootCmd.AddCommand(restartCmd)
+	restartCmd.Flags().StringVar(&servePort, "port", "27842", "Port to listen on")
+	restartCmd.Flags().BoolVar(&serveDev, "dev", false, "Run in development mode with hot reload")
+}
+
+func runRestart(cmd *cobra.Command, args []string) {
+	// Try to read existing PID and stop the process
+	pid, err := readPidFile()
+	if err != nil {
+		// No PID file, just start fresh
+		fmt.Println("No running server found, starting a new one...")
+	} else if isProcessRunning(pid) {
+		fmt.Printf("Stopping server (PID: %d)...\n", pid)
+		if err := stopProcess(pid); err != nil {
+			Failf("Failed to stop server: %v", err)
+			os.Exit(1)
+		}
+		fmt.Println("Server stopped.")
+	} else {
+		fmt.Println("Server not running, cleaning up stale PID file...")
+		removePidFile()
+	}
+
+	// Wait a moment for port to be released
+	fmt.Println("Starting server...")
+
+	// Get current executable path
+	execPath, err := getCurrentExecutable()
+	if err != nil {
+		execPath = os.Args[0]
+	}
+
+	// Build arguments for new server
+	newArgs := []string{"serve"}
+	if servePort != "27842" {
+		newArgs = append(newArgs, "--port", servePort)
+	}
+	if serveDev {
+		newArgs = append(newArgs, "--dev")
+	}
+
+	// Start new server process
+	newProcess := exec.Command(execPath, newArgs...)
+	newProcess.Stdout = os.Stdout
+	newProcess.Stderr = os.Stderr
+	newProcess.Stdin = os.Stdin
+
+	if err := newProcess.Start(); err != nil {
+		Failf("Failed to start server: %v", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Server restarting (new PID: %d)...\n", newProcess.Process.Pid)
 }
 
 func runServe(cmd *cobra.Command, args []string) {
@@ -40,6 +199,15 @@ func runServe(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	// Write PID file
+	if err := writePidFile(); err != nil {
+		Failf("Failed to write PID file: %v", err)
+		os.Exit(1)
+	}
+
+	// Clean up PID file on exit
+	defer removePidFile()
+
 	// Production mode - use embedded web UI
 	http.Handle("/", ServeFileServer())
 
@@ -48,6 +216,7 @@ func runServe(cmd *cobra.Command, args []string) {
 	http.HandleFunc("/api/projects", handleProjects)
 
 	fmt.Printf("Easy Skills Hub running at http://localhost:%s\n", servePort)
+	fmt.Printf("PID: %d\n", os.Getpid())
 	fmt.Printf("Press Ctrl+C to stop\n")
 
 	if err := http.ListenAndServe(addr, nil); err != nil {
