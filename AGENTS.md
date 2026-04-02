@@ -62,3 +62,25 @@ On error:
   "error": "package not found"
 }
 ```
+
+## Building & Releasing
+
+To build release artifacts:
+
+```bash
+# Build CLI + Mac App + Source archive
+make release
+
+# Artifacts will be in releases/:
+# - easy-skills              # CLI binary
+# - Easy Skills.dmg          # macOS installer
+# - easy-skills-source.tar.gz  # Source code
+```
+
+To build individual components:
+
+```bash
+make build          # CLI only
+make build-tauri    # Mac App only (includes dmg creation)
+make source-tar    # Source archive only
+```

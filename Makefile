@@ -1,4 +1,4 @@
-.PHONY: all build build-all test clean dev serve install
+.PHONY: all build build-all test clean dev serve install release dist
 
 # Default target
 all: build
@@ -27,6 +27,7 @@ clean:
 	rm -rf easy-skills
 	rm -rf web/dist
 	rm -rf internal/cli/dist
+	rm -rf releases/*
 
 # Run web dev server
 dev:
@@ -47,3 +48,23 @@ serve-dev:
 # Install to system
 install:
 	go install ./cmd/easy-skills
+
+# Build Tauri Mac App and create dmg
+build-tauri:
+	cd src-tauri && cargo tauri build
+	@echo "Creating dmg installer..."
+	cd target/release/bundle/macos && hdiutil create -volname "Easy Skills" -srcfolder "Easy Skills.app" -ov -format UDZO "Easy Skills.dmg"
+
+# Create source code archive
+source-tar:
+	git archive -o releases/easy-skills-source.tar.gz HEAD
+
+# Full release build: CLI + Mac App + Source
+release: build build-tauri source-tar
+	@echo "Moving artifacts to releases/..."
+	mkdir -p releases
+	mv easy-skills releases/
+	mv src-tauri/target/release/bundle/macos/Easy\ Skills.dmg releases/ 2>/dev/null || true
+	mv src-tauri/target/release/bundle/macos/Easy\ Skills.app releases/ 2>/dev/null || true
+	@echo "Release artifacts:"
+	@ls -la releases/

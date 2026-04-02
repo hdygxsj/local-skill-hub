@@ -71,18 +71,37 @@ AI IDE 的 Local Skill Hub，支持多 IDE (Cursor/Qoder) 的 Skill 托管和切
 
 ## Installation
 
-### CLI
+### Install from Release (Recommended)
+
+Download from [GitHub Releases](https://github.com/hdygxsj/easy-skills/releases):
+
+- `easy-skills` - CLI binary for macOS/Linux
+- `Easy Skills.dmg` - macOS installer
+- `easy-skills-source.tar.gz` - Source code
+
+### Install CLI via Go
 
 ```bash
-# From source
-git clone https://github.com/easy-skills/easy-skills.git
-cd easy-skills
-go install
-
-# Or download binary from releases
+go install github.com/hdygxsj/easy-skills@latest
 ```
 
-### Web UI
+### Build from Source
+
+```bash
+# Clone the repo
+git clone https://github.com/hdygxsj/easy-skills.git
+cd easy-skills
+
+# Build CLI + Mac App + Source
+make release
+
+# Or build individually:
+make build          # CLI only
+make build-tauri   # Mac App only
+make source-tar    # Source archive only
+```
+
+### Build Web UI (for development)
 
 ```bash
 cd web
@@ -91,21 +110,13 @@ npm run dev
 # Open http://localhost:27842
 ```
 
-### Mac App
-
-```bash
-cd src-tauri
-cargo build --release
-# Binary at target/release/easy-skills
-```
-
 ## Quick Start
 
 ### 1. Install CLI
 
 ```bash
 # Install via go
-go install github.com/easy-skills/easy-skills@latest
+go install github.com/hdygxsj/easy-skills@latest
 
 # Or download from releases
 ```
@@ -117,8 +128,8 @@ go install github.com/easy-skills/easy-skills@latest
 easy-skills serve
 # Opens http://localhost:27842
 
-# Option B: Use Mac App
-open target/release/bundle/macos/Easy\ Skills.app
+# Option B: Use Mac App (double-click Easy Skills.dmg)
+open releases/Easy\ Skills.dmg
 ```
 
 ### 3. Install easy-skills Skill to Your IDE
