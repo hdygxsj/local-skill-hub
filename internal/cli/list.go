@@ -44,10 +44,10 @@ func runList(cmd *cobra.Command, args []string) {
 		components, _ := h.GetComponentsByVersion(version.ID)
 
 		result = append(result, map[string]interface{}{
-			"package":           pkg,
-			"current_version":   version,
-			"components":        components,
-			"components_count":   len(components),
+			"package":          pkg,
+			"current_version":  version,
+			"components":       components,
+			"components_count": len(components),
 		})
 	}
 

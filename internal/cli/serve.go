@@ -68,19 +68,19 @@ func runNpmDev() {
 
 func handlePackages(w http.ResponseWriter, r *http.Request) {
 	target := r.URL.Query().Get("target")
-	
+
 	// Call CLI list command
 	args := []string{"list", "--target", target, "--json"}
 	if target == "" {
 		args = []string{"list", "--json"}
 	}
-	
+
 	output, err := exec.Command(os.Args[0], args...).Output()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("CLI error: %v", err), 500)
 		return
 	}
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(output)
 }
@@ -91,7 +91,7 @@ func handleProjects(w http.ResponseWriter, r *http.Request) {
 	projects := []map[string]string{
 		{"name": "local-skill-hub", "path": "/Users/zhongyangyang/PycharmProjects/local-skill-hub"},
 	}
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, `{"projects":[`)
 	for i, p := range projects {

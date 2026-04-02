@@ -15,12 +15,12 @@ type Package struct {
 
 // PackageVersion represents a version of a package
 type PackageVersion struct {
-	ID            string    `json:"id"`
-	PackageID     string    `json:"package_id"`
-	Version       int64     `json:"version"` // Hub internal version (timestamp)
-	Metadata      string    `json:"metadata,omitempty"` // JSON: real version, git ref
-	IsCurrent     bool      `json:"is_current"`
-	CreatedAt     time.Time `json:"created_at"`
+	ID        string    `json:"id"`
+	PackageID string    `json:"package_id"`
+	Version   int64     `json:"version"`            // Hub internal version (timestamp)
+	Metadata  string    `json:"metadata,omitempty"` // JSON: real version, git ref
+	IsCurrent bool      `json:"is_current"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 // Component represents a skill/agent/hook/rule in a package
@@ -37,7 +37,7 @@ type Component struct {
 type Installation struct {
 	ID          string    `json:"id"`
 	ComponentID string    `json:"component_id"`
-	IDE         string    `json:"ide"` // "qoder" / "cursor"
+	IDE         string    `json:"ide"`   // "qoder" / "cursor"
 	Scope       string    `json:"scope"` // "user" / "project"
 	InstallPath string    `json:"install_path"`
 	InstalledAt time.Time `json:"installed_at"`

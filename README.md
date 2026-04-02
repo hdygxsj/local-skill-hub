@@ -101,19 +101,46 @@ cargo build --release
 
 ## Quick Start
 
+### 1. Install CLI
+
 ```bash
-# Register a package to Hub
-easy-skills register --name superpowers --target qoder --source https://github.com/obra/superpowers
+# Install via go
+go install github.com/easy-skills/easy-skills@latest
 
-# List packages in Hub
-easy-skills list --target qoder
-
-# Show package details
-easy-skills info --name superpowers --target qoder
-
-# Check installation status
-easy-skills status --ide qoder
+# Or download from releases
 ```
+
+### 2. Start Web GUI or Mac App
+
+```bash
+# Option A: Start Web GUI (recommended)
+easy-skills serve
+# Opens http://localhost:27842
+
+# Option B: Use Mac App
+open target/release/bundle/macos/Easy\ Skills.app
+```
+
+### 3. Install easy-skills Skill to Your IDE
+
+Tell your AI Agent to install:
+
+```
+/easy-skills Fetch and follow instructions from http://localhost:27842/qoder/easy-skills.md
+```
+
+### 4. Done! 
+
+Now your AI Agent can manage skills via `/easy-skills`:
+
+```
+/easy-skills 查看已安装的 packages
+/easy-skills 帮我安装 superpowers 到 qoder
+/easy-skills 升级 superpowers 到最新版本
+/easy-skills 查看 superpowers 的版本历史
+```
+
+**No manual CLI commands needed** - your AI Agent handles everything!
 
 ## CLI Commands
 

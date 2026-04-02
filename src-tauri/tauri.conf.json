@@ -1,19 +1,15 @@
 {
+  "$schema": "https://v2.tauri.app/schemas/desktop-schema.json",
+  "productName": "Easy Skills",
+  "version": "0.1.0",
+  "identifier": "com.easy-skills.app",
   "build": {
-    "distDir": "../web/dist",
-    "devPath": "http://localhost:27842",
     "beforeDevCommand": "cd ../web && npm run dev",
-    "beforeBuildCommand": "cd ../web && npm run build"
+    "beforeBuildCommand": "cd ../web && npm run build",
+    "devUrl": "http://localhost:27842",
+    "frontendDist": "../web/dist"
   },
-  "package": {
-    "productName": "Easy Skills",
-    "version": "0.1.0"
-  },
-  "tauri": {
-    "bundle": {
-      "identifier": "com.easy-skills.app",
-      "targets": "all"
-    },
+  "app": {
     "windows": [
       {
         "title": "Easy Skills Hub",
@@ -22,6 +18,12 @@
         "resizable": true,
         "fullscreen": false
       }
+    ]
+  },
+  "bundle": {
+    "targets": "all",
+    "icon": [
+      "icons/icon_512x512.png"
     ]
   }
 }
