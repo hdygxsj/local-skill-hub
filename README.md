@@ -1,15 +1,16 @@
 # Easy Skills
 
-AI IDE 的 Local Skill Hub，支持多 IDE (Cursor/Qoder) 的 Skill 托管和切换。
+**让 AI Agent 自动管理你的 IDE Skills。**
+
+Easy Skills 是一个 AI IDE 的 Local Skill Hub，支持 Qoder 和 Cursor。通过自然语言，你的 AI Agent 可以自动安装、升级和管理各种 Skills，无需手动操作。
 
 ## Features
 
-- **Package Management**: 注册、管理多个 Skill Package
-- **Multi-IDE Support**: 支持 Qoder 和 Cursor
-- **Version Tracking**: Hub 内部版本号 + 真实版本号追踪
-- **Agent Integration**: 提供 CLI Skill 给 AI IDE Agent 使用
-- **Web GUI**: 现代化 Web 界面查看状态 (http://localhost:27842)
-- **Mac App**: Tauri 打包的桌面客户端
+- **AI-Powered**: 告诉 AI Agent 你想要什么，它会自动完成安装和管理
+- **Multi-IDE Support**: 同时支持 Qoder 和 Cursor
+- **Package Management**: 从 GitHub 注册和管理 Skill Packages
+- **Version Tracking**: 支持版本管理和回滚
+- **Web GUI**: 现代化 Web 界面查看已安装的 Packages (http://localhost:27842)
 
 ## Architecture
 
@@ -118,47 +119,38 @@ npm run dev
 
 ## Quick Start
 
-### 1. Install CLI
+### 1. Tell Your AI Agent to Install
 
-```bash
-# Install via npm (recommended)
-npm install -g easy-skills-cli
+The easiest way is to let your AI Agent handle everything:
 
-# Or via Go
-go install github.com/hdygxsj/easy-skills@latest
+**For Qoder:**
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/hdygxsj/easy-skills/master/web/public/qoder/INSTALL.md
 ```
 
-### 2. Start Web GUI or Mac App
-
-```bash
-# Option A: Start Web GUI (recommended)
-easy-skills serve
-# Opens http://localhost:27842
-
-# Option B: Use Mac App (double-click Easy Skills.dmg)
-open releases/Easy\ Skills.dmg
+**For Cursor:**
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/hdygxsj/easy-skills/master/web/public/cursor/INSTALL.md
 ```
 
-### 3. Install easy-skills Skill to Your IDE
+The AI Agent will automatically:
+1. Download and install the easy-skills CLI
+2. Start the Hub service
+3. Install the skill to your IDE
 
-Tell your AI Agent to install:
-
-```
-Fetch and follow instructions from http://localhost:27842/qoder/easy-skills.md
-```
-
-### 4. Done! 
+### 2. Done!
 
 Now your AI Agent can manage skills via `/easy-skills`:
 
 ```
-/easy-skills 查看已安装的 packages
-/easy-skills 帮我安装 superpowers 到 qoder
-/easy-skills 升级 superpowers 到最新版本
-/easy-skills 查看 superpowers 的版本历史
+/easy-skills 列出 qoder 可用的 packages
+/easy-skills 帮我安装某个 package 到 qoder
+/easy-skills 查看某个 package 的详情
+/easy-skills 升级某个 package
+/easy-skills 卸载某个 package
 ```
 
-**No manual CLI commands needed** - your AI Agent handles everything!
+**No manual commands needed** - your AI Agent handles everything!
 
 ## CLI Commands
 

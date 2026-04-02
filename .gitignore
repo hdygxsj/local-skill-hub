@@ -14,21 +14,14 @@
 *.out
 vendor/
 
-# Rust
-.cargo/
-target/
-
 # Build artifacts
-internal/cli/dist/
-web/dist/
+internal/cli/dist
+web/dist
 src-tauri/index.html
-src-tauri/assets/
-src-tauri/qoder/
-src-tauri/cursor/
-src-tauri/gen/
-
-# npm
-web/node_modules/
+src-tauri/assets
+src-tauri/qoder
+src-tauri/cursor
+src-tauri/gen
 
 # Releases (final distribution)
 releases/
@@ -42,3 +35,6 @@ hub.db
 # OS
 .DS_Store
 Thumbs.db
+node_modules
+target
+src-tauri/assets

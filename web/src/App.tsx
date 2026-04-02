@@ -281,18 +281,23 @@ function App() {
           <PackageIcon className="w-5 h-5" />
           Install Easy Skills in Your AI IDE
         </h2>
+        <p className="text-sm text-blue-700 mb-3">
+          Tell your AI Agent to read and follow the installation guide:
+        </p>
         <div className="space-y-2 text-sm">
           <div>
             <span className="font-medium text-blue-700">Qoder:</span>
-            <code className="ml-2 px-2 py-1 bg-blue-100 rounded text-blue-800">
-               Fetch and follow instructions from http://localhost:27842/qoder/INSTALL.md
-            </code>
+            <div className="mt-1 p-2 bg-blue-100 rounded font-mono text-xs text-blue-800">
+              Fetch and follow instructions from<br/>
+              https://raw.githubusercontent.com/hdygxsj/easy-skills/master/web/public/qoder/INSTALL.md
+            </div>
           </div>
           <div>
             <span className="font-medium text-blue-700">Cursor:</span>
-            <code className="ml-2 px-2 py-1 bg-blue-100 rounded text-blue-800">
-              Fetch and follow instructions from http://localhost:27842/cursor/INSTALL.md
-            </code>
+            <div className="mt-1 p-2 bg-blue-100 rounded font-mono text-xs text-blue-800">
+              Fetch and follow instructions from<br/>
+              https://raw.githubusercontent.com/hdygxsj/easy-skills/master/web/public/cursor/INSTALL.md
+            </div>
           </div>
         </div>
       </div>
@@ -654,15 +659,22 @@ function App() {
                     Install Skills
                   </h3>
                   <p className="text-gray-600 mb-3">
-                    Tell AI Agent to install skills:
+                    Tell your AI Agent to read and follow the installation guide:
                   </p>
-                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
-                    <p className="text-gray-500"># Install to Qoder</p>
-                    <p className="text-blue-600">/easy-skills Fetch and follow instructions from</p>
-                    <p className="text-blue-600 pl-4">https://raw.githubusercontent.com/xxx/easy-skills/main/.qoder/INSTALL.md</p>
+                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-3">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1">For Qoder:</p>
+                      <p className="text-blue-600 text-xs">Fetch and follow instructions from</p>
+                      <p className="text-blue-600 text-xs pl-2">https://raw.githubusercontent.com/hdygxsj/easy-skills/master/web/public/qoder/INSTALL.md</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1">For Cursor:</p>
+                      <p className="text-blue-600 text-xs">Fetch and follow instructions from</p>
+                      <p className="text-blue-600 text-xs pl-2">https://raw.githubusercontent.com/hdygxsj/easy-skills/master/web/public/cursor/INSTALL.md</p>
+                    </div>
                   </div>
                   <p className="text-gray-500 text-sm mt-2">
-                    This will install the skill to your IDE and register it in the Skill Hub.
+                    The AI Agent will automatically install CLI, start the Hub, and register the skill.
                   </p>
                 </section>
 
