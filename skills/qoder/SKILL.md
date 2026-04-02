@@ -8,6 +8,7 @@ Easy Skills is a local skill hub that manages skill packages for Qoder IDE. Use 
 - Register packages to local Hub
 - List available packages
 - View package details
+- Install or uninstall packages to/from Qoder
 - Check installation status
 
 ## Commands
@@ -31,6 +32,22 @@ easy-skills list --target qoder
 ```bash
 # View package details
 easy-skills info --name <name> --target qoder
+```
+
+### Installation
+
+```bash
+# Install package to Qoder (user scope)
+easy-skills install --name <name> --target qoder --ide qoder --scope user
+
+# Install to project scope
+easy-skills install --name <name> --target qoder --ide qoder --scope project
+
+# Uninstall package
+easy-skills uninstall --name <name> --target qoder --ide qoder --scope user
+
+# Reinstall package
+easy-skills reinstall --name <name> --target qoder --ide qoder
 ```
 
 ### Status
@@ -68,10 +85,14 @@ On error:
 1. Run `easy-skills status --ide qoder`
 2. Parse JSON output to show installed packages
 
-### Register and View a Package
+### Install a Package
 1. Register: `easy-skills register --name <pkg> --target qoder --source <url>`
-2. List: `easy-skills list --target qoder`
-3. View details: `easy-skills info --name <pkg> --target qoder`
+2. Install: `easy-skills install --name <pkg> --target qoder --ide qoder --scope user`
+3. Verify: `easy-skills status --ide qoder`
+
+### Uninstall a Package
+1. Run `easy-skills uninstall --name <pkg> --target qoder --ide qoder --scope user`
+2. Verify: `easy-skills status --ide qoder`
 
 ## Web UI
 

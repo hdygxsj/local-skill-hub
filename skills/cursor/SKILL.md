@@ -8,6 +8,7 @@ Easy Skills is a local skill hub that manages skill packages for Cursor IDE. Use
 - Register packages to local Hub
 - List available packages
 - View package details
+- Install or uninstall packages to/from Cursor
 - Check installation status
 
 ## Commands
@@ -31,6 +32,22 @@ easy-skills list --target cursor
 ```bash
 # View package details
 easy-skills info --name <name> --target cursor
+```
+
+### Installation
+
+```bash
+# Install package to Cursor (user scope)
+easy-skills install --name <name> --target cursor --ide cursor --scope user
+
+# Install to project scope
+easy-skills install --name <name> --target cursor --ide cursor --scope project
+
+# Uninstall package
+easy-skills uninstall --name <name> --target cursor --ide cursor --scope user
+
+# Reinstall package
+easy-skills reinstall --name <name> --target cursor --ide cursor
 ```
 
 ### Status
@@ -68,10 +85,14 @@ On error:
 1. Run `easy-skills status --ide cursor`
 2. Parse JSON output to show installed packages
 
-### Register and View a Package
+### Install a Package
 1. Register: `easy-skills register --name <pkg> --target cursor --source <url>`
-2. List: `easy-skills list --target cursor`
-3. View details: `easy-skills info --name <pkg> --target cursor`
+2. Install: `easy-skills install --name <pkg> --target cursor --ide cursor --scope user`
+3. Verify: `easy-skills status --ide cursor`
+
+### Uninstall a Package
+1. Run `easy-skills uninstall --name <pkg> --target cursor --ide cursor --scope user`
+2. Verify: `easy-skills status --ide cursor`
 
 ## Web UI
 
