@@ -661,12 +661,12 @@ function App() {
                     Skill
                   </h3>
                   <p className="text-gray-600 mb-3">
-                    Use skills by mentioning their name:
+                    Skills are markdown files that provide specialized capabilities:
                   </p>
                   <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
-                    <p className="text-gray-500"># Activate a skill</p>
-                    <p className="text-green-600">/brainstorming</p>
-                    <p className="text-gray-500"># Or describe what you need</p>
+                    <p className="text-gray-500"># List available skills</p>
+                    <p className="text-green-600">/easy-skills list</p>
+                    <p className="text-gray-500"># Or ask AI Agent naturally</p>
                     <p className="text-green-600">"I need help with project planning"</p>
                   </div>
                 </section>
@@ -681,8 +681,9 @@ function App() {
                     Agents are specialized AI subagents:
                   </p>
                   <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
-                    <p className="text-gray-500"># AI Agent uses agents automatically</p>
-                    <p className="text-purple-600">"Review this code for security issues"</p>
+                    <p className="text-gray-500"># Start a coding task</p>
+                    <p className="text-purple-600">/easy-skills dev</p>
+                    <p className="text-gray-500"># AI Agent coordinates agents</p>
                   </div>
                 </section>
 
@@ -696,9 +697,9 @@ function App() {
                     Hooks run automatically at specific points:
                   </p>
                   <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
-                    <p className="text-gray-500"># Hooks trigger automatically</p>
+                    <p className="text-gray-500"># Hooks are installed with packages</p>
                     <p className="text-orange-600">git commit -m "fix: issue"</p>
-                    <p className="text-gray-400">→ pre-commit hook runs</p>
+                    <p className="text-gray-400">→ pre-commit hook runs automatically</p>
                   </div>
                 </section>
 
@@ -712,8 +713,8 @@ function App() {
                     Rules define coding standards:
                   </p>
                   <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
-                    <p className="text-gray-500"># Rules apply automatically</p>
-                    <p className="text-red-600">"Write a React component"</p>
+                    <p className="text-gray-500"># Rules apply during code generation</p>
+                    <p className="text-red-600">/easy-skills list --type rule</p>
                     <p className="text-gray-400">→ AI follows TypeScript rules</p>
                   </div>
                 </section>
