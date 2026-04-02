@@ -2,6 +2,10 @@
 
 This project uses Easy Skills Hub for AI IDE Skill management.
 
+## General Rules
+
+**版本控制：** 任何改动完成都应该进行 git commit。
+
 ## For AI Agents
 
 When working with this project, you can use `easy-skills` CLI to manage skills:
