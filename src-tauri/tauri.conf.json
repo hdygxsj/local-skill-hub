@@ -5,7 +5,7 @@
   "identifier": "com.easy-skills.hub",
   "build": {
     "beforeDevCommand": "cd ../web && npm run dev",
-    "beforeBuildCommand": "cd ../web && npm run build",
+    "beforeBuildCommand": "echo 'Web already built via make build'",
     "devUrl": "http://localhost:27842",
     "frontendDist": "../web/dist"
   },

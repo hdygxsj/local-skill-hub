@@ -49,11 +49,13 @@ serve-dev:
 install:
 	go install ./cmd/easy-skills
 
-# Build Tauri Mac App and create dmg
+# Build Tauri Mac App bundle (app + dmg)
 build-tauri:
 	cd src-tauri && cargo tauri build
-	@echo "Creating dmg installer..."
-	cd target/release/bundle/macos && hdiutil create -volname "Easy Skills" -srcfolder "Easy Skills.app" -ov -format UDZO "Easy Skills.dmg"
+	@echo "Moving bundles to releases..."
+	mkdir -p releases
+	mv src-tauri/target/release/bundle/macos/*.app releases/ 2>/dev/null || true
+	mv src-tauri/target/release/bundle/dmg/*.dmg releases/ 2>/dev/null || true
 
 # Create source code archive
 source-tar:
