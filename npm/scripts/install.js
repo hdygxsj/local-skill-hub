@@ -29,18 +29,18 @@ if (!npmPlatform || !npmArch) {
   process.exit(1);
 }
 
-const version = require('./package.json').version;
-const binaryName = `easy-skills-${npmPlatform}-${npmArch}`;
-const binaryExt = platform === 'win32' ? '.exe' : '';
+const version = require(path.join(__dirname, '..', 'package.json')).version;
+// Only download macOS ARM64 CLI binary
+const binaryName = 'easy-skills-cli-macos-aarch64';
 
 // GitHub releases URL
 const baseUrl = `https://github.com/hdygxsj/easy-skills/releases/download/v${version}`;
-const downloadUrl = `${baseUrl}/${binaryName}${binaryExt}`;
+const downloadUrl = `${baseUrl}/${binaryName}`;
 
 // Installation paths
 const npmDir = __dirname;
 const binDir = path.join(npmDir, 'bin');
-const targetPath = path.join(binDir, `easy-skills${binaryExt}`);
+const targetPath = path.join(binDir, 'easy-skills');
 
 function installBinary() {
   console.log(`Installing easy-skills ${version} for ${npmPlatform}/${npmArch}...`);
