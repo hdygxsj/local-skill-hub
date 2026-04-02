@@ -1,19 +1,26 @@
 import { useState, useEffect } from 'react'
 import { 
-  Package,          // 📦
-  Target,           // 🎯
-  Bot,              // 🤖
-  Ruler,            // 📐
-  Anchor,           // 🪝 (hook)
-  Check,            // ✓
-  Loader2           // Loading
+  Package as PackageIcon,
+  Target,
+  Bot,
+  Ruler,
+  Anchor,
+  Check,
+  Loader2,
+  Folder,
+  FolderOpen
 } from 'lucide-react'
 
 interface Package {
   id: string
   name: string
   target: string
+  version: string
   source?: string
+  installed: boolean
+  installPath: string
+  scope: 'user' | 'project'
+  components: Component[]
 }
 
 interface Component {
@@ -22,6 +29,7 @@ interface Component {
   type: 'skill' | 'agent' | 'hook' | 'rule'
   packageName?: string
   installed?: boolean
+  installPath?: string
 }
 
 function App() {
@@ -38,46 +46,62 @@ function App() {
     setLoading(true)
     
     // Simulate API call with different data based on target
-    const qoderPackages = [
+    const qoderPackages: Package[] = [
       {
+        id: '1',
         name: 'superpowers',
         target: 'qoder',
         version: 'v1.0.0',
+        installed: true,
+        installPath: '~/.qoder/skills/superpowers',
+        scope: 'user',
         components: [
-          { id: '1', name: 'brainstorming', type: 'skill', packageName: 'superpowers' },
-          { id: '2', name: 'writing-plans', type: 'skill', packageName: 'superpowers' },
-          { id: '3', name: 'test-driven-development', type: 'skill', packageName: 'superpowers' },
-          { id: '4', name: 'subagent-driven-dev', type: 'agent', packageName: 'superpowers' },
+          { id: '1', name: 'brainstorming', type: 'skill', packageName: 'superpowers', installed: true, installPath: '~/.qoder/skills/superpowers/brainstorming' },
+          { id: '2', name: 'writing-plans', type: 'skill', packageName: 'superpowers', installed: true, installPath: '~/.qoder/skills/superpowers/writing-plans' },
+          { id: '3', name: 'test-driven-development', type: 'skill', packageName: 'superpowers', installed: true, installPath: '~/.qoder/skills/superpowers/test-driven-development' },
+          { id: '4', name: 'subagent-driven-dev', type: 'agent', packageName: 'superpowers', installed: true, installPath: '~/.qoder/skills/superpowers/subagent-driven-development' },
         ]
       },
       {
+        id: '2',
         name: 'open-spec',
         target: 'qoder',
         version: 'v2.0.0',
+        installed: true,
+        installPath: '.qoder/skills/open-spec',
+        scope: 'project',
         components: [
-          { id: '5', name: 'api-design', type: 'skill', packageName: 'open-spec' },
-          { id: '6', name: 'typescript-rules', type: 'rule', packageName: 'open-spec' },
+          { id: '5', name: 'api-design', type: 'skill', packageName: 'open-spec', installed: true, installPath: '.qoder/skills/open-spec/api-design' },
+          { id: '6', name: 'typescript-rules', type: 'rule', packageName: 'open-spec', installed: true, installPath: '.qoder/skills/open-spec/typescript-rules' },
         ]
       }
     ]
     
-    const cursorPackages = [
+    const cursorPackages: Package[] = [
       {
+        id: '3',
         name: 'cursor-tools',
         target: 'cursor',
         version: 'v1.5.0',
+        installed: true,
+        installPath: '~/.cursorrules/cursor-tools',
+        scope: 'user',
         components: [
-          { id: '7', name: 'cursor-skill', type: 'skill', packageName: 'cursor-tools' },
-          { id: '8', name: 'cursor-agent', type: 'agent', packageName: 'cursor-tools' },
+          { id: '7', name: 'cursor-skill', type: 'skill', packageName: 'cursor-tools', installed: true, installPath: '~/.cursorrules/cursor-tools/cursor-skill' },
+          { id: '8', name: 'cursor-agent', type: 'agent', packageName: 'cursor-tools', installed: true, installPath: '~/.cursorrules/cursor-tools/cursor-agent' },
         ]
       },
       {
+        id: '4',
         name: 'superpowers',
         target: 'cursor',
         version: 'v1.0.0',
+        installed: false,
+        installPath: '',
+        scope: 'user',
         components: [
-          { id: '9', name: 'brainstorming', type: 'skill', packageName: 'superpowers' },
-          { id: '10', name: 'verification', type: 'skill', packageName: 'superpowers' },
+          { id: '9', name: 'brainstorming', type: 'skill', packageName: 'superpowers', installed: false, installPath: '' },
+          { id: '10', name: 'verification', type: 'skill', packageName: 'superpowers', installed: false, installPath: '' },
         ]
       }
     ]
@@ -121,7 +145,7 @@ function App() {
       {/* Install Guide Banner */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg m-6 p-4">
         <h2 className="text-lg font-semibold text-blue-900 mb-2 flex items-center gap-2">
-          <Package className="w-5 h-5" />
+          <PackageIcon className="w-5 h-5" />
           Install Easy Skills in Your AI IDE
         </h2>
         <div className="space-y-2 text-sm">
@@ -176,16 +200,32 @@ function App() {
         ) : view === 'packages' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {packages.map((pkg) => (
-              <div key={pkg.name} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <h3 className="font-semibold text-lg">{pkg.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">{pkg.version}</p>
-                <p className="text-sm text-gray-600 mt-2">{pkg.components.length} components</p>
-                <div className="mt-3 flex gap-2">
-                  <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded flex items-center gap-1">
+              <div key={pkg.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="font-semibold text-lg">{pkg.name}</h3>
+                    <p className="text-sm text-gray-500 mt-0.5">v{pkg.version}</p>
+                  </div>
+                  <span className={`px-2 py-1 text-xs rounded flex items-center gap-1 ${
+                    pkg.installed 
+                      ? 'bg-green-100 text-green-700' 
+                      : 'bg-gray-200 text-gray-500'
+                  }`}>
                     <Check className="w-3 h-3" />
-                    Installed
+                    {pkg.installed ? 'Installed' : 'Not Installed'}
                   </span>
                 </div>
+                
+                <div className="mt-3 flex items-center gap-2 text-sm">
+                  {pkg.scope === 'user' ? (
+                    <Folder className="w-4 h-4 text-gray-400" />
+                  ) : (
+                    <FolderOpen className="w-4 h-4 text-gray-400" />
+                  )}
+                  <code className="text-gray-600 text-xs truncate">{pkg.installPath || 'N/A'}</code>
+                </div>
+                
+                <p className="text-xs text-gray-400 mt-2">{pkg.components.length} components</p>
               </div>
             ))}
           </div>
@@ -201,17 +241,31 @@ function App() {
                 </h3>
               </div>
               <div className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                <div className="space-y-2">
                   {packages.flatMap(pkg => 
                     pkg.components
                       .filter((c: Component) => c.type === 'skill')
                       .map((comp: Component) => (
-                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                            <span className="text-sm font-medium">{comp.name}</span>
+                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                              <span className="text-sm font-medium">{comp.name}</span>
+                            </div>
+                            <span className={`px-2 py-0.5 text-xs rounded ${
+                              comp.installed 
+                                ? 'bg-green-100 text-green-700' 
+                                : 'bg-gray-200 text-gray-500'
+                            }`}>
+                              {comp.installed ? 'Installed' : 'Not Installed'}
+                            </span>
                           </div>
-                          <span className="text-xs text-gray-400">← {comp.packageName}</span>
+                          <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                            <code className="truncate">{comp.installPath || 'N/A'}</code>
+                          </div>
+                          <div className="mt-1 text-xs text-gray-400">
+                            from {comp.packageName}
+                          </div>
                         </div>
                       ))
                   )}
@@ -229,17 +283,31 @@ function App() {
                 </h3>
               </div>
               <div className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                <div className="space-y-2">
                   {packages.flatMap(pkg => 
                     pkg.components
                       .filter((c: Component) => c.type === 'agent')
                       .map((comp: Component) => (
-                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-purple-500"></span>
-                            <span className="text-sm font-medium">{comp.name}</span>
+                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                              <span className="text-sm font-medium">{comp.name}</span>
+                            </div>
+                            <span className={`px-2 py-0.5 text-xs rounded ${
+                              comp.installed 
+                                ? 'bg-green-100 text-green-700' 
+                                : 'bg-gray-200 text-gray-500'
+                            }`}>
+                              {comp.installed ? 'Installed' : 'Not Installed'}
+                            </span>
                           </div>
-                          <span className="text-xs text-gray-400">← {comp.packageName}</span>
+                          <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                            <code className="truncate">{comp.installPath || 'N/A'}</code>
+                          </div>
+                          <div className="mt-1 text-xs text-gray-400">
+                            from {comp.packageName}
+                          </div>
                         </div>
                       ))
                   )}
@@ -257,17 +325,31 @@ function App() {
                 </h3>
               </div>
               <div className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                <div className="space-y-2">
                   {packages.flatMap(pkg => 
                     pkg.components
                       .filter((c: Component) => c.type === 'rule')
                       .map((comp: Component) => (
-                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-                            <span className="text-sm font-medium">{comp.name}</span>
+                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                              <span className="text-sm font-medium">{comp.name}</span>
+                            </div>
+                            <span className={`px-2 py-0.5 text-xs rounded ${
+                              comp.installed 
+                                ? 'bg-green-100 text-green-700' 
+                                : 'bg-gray-200 text-gray-500'
+                            }`}>
+                              {comp.installed ? 'Installed' : 'Not Installed'}
+                            </span>
                           </div>
-                          <span className="text-xs text-gray-400">← {comp.packageName}</span>
+                          <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                            <code className="truncate">{comp.installPath || 'N/A'}</code>
+                          </div>
+                          <div className="mt-1 text-xs text-gray-400">
+                            from {comp.packageName}
+                          </div>
                         </div>
                       ))
                   )}
@@ -285,17 +367,31 @@ function App() {
                 </h3>
               </div>
               <div className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                <div className="space-y-2">
                   {packages.flatMap(pkg => 
                     pkg.components
                       .filter((c: Component) => c.type === 'hook')
                       .map((comp: Component) => (
-                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-gray-400"></span>
-                            <span className="text-sm font-medium">{comp.name}</span>
+                        <div key={comp.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-gray-400"></span>
+                              <span className="text-sm font-medium">{comp.name}</span>
+                            </div>
+                            <span className={`px-2 py-0.5 text-xs rounded ${
+                              comp.installed 
+                                ? 'bg-green-100 text-green-700' 
+                                : 'bg-gray-200 text-gray-500'
+                            }`}>
+                              {comp.installed ? 'Installed' : 'Not Installed'}
+                            </span>
                           </div>
-                          <span className="text-xs text-gray-400">← {comp.packageName}</span>
+                          <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                            <code className="truncate">{comp.installPath || 'N/A'}</code>
+                          </div>
+                          <div className="mt-1 text-xs text-gray-400">
+                            from {comp.packageName}
+                          </div>
                         </div>
                       ))
                   )}
