@@ -65,22 +65,54 @@ On error:
 
 ## Building & Releasing
 
-To build release artifacts:
+### Release Targets
+
+**Only publish these to GitHub Releases:**
+1. **macOS ARM64 binary** - `easy-skills-macos-aarch64`
+2. **npm package** - CLI via `npm publish`
+
+> Note: Users on other platforms can install via `npm install -g easy-skills`
+
+### Build Steps
 
 ```bash
-# Build CLI + Mac App + Source archive
-make release
+# 1. Build cross-platform binaries (for npm install.js to download)
+make build-cross
 
-# Artifacts will be in releases/:
-# - easy-skills              # CLI binary
-# - Easy Skills.dmg          # macOS installer
-# - easy-skills-source.tar.gz  # Source code
+# 2. Upload to GitHub Releases
+# - Go to https://github.com/hdygxsj/easy-skills/releases/new
+# - Create tag vX.Y.Z
+# - Upload: easy-skills-macos-aarch64
+
+# 3. Publish CLI to npm
+cd npm
+npm publish --access public
 ```
 
-To build individual components:
+### GitHub Release Assets
+
+Upload only:
+- `easy-skills-macos-aarch64` (macOS ARM64 binary for npm to download)
+
+### npm Package
+
+The `npm/` directory contains:
+- `package.json` - npm package config
+- `scripts/install.js` - downloads platform-specific binary from GitHub Releases
+- `bin/easy-skills` - Node wrapper that forwards to the downloaded binary
+
+### Historical Artifacts (for reference only)
+
+The `releases/` directory may contain:
+- `Easy Skills.app` - macOS App bundle (optional, users can use dmg instead)
+- `Easy Skills.dmg` - macOS installer (optional)
+- `easy-skills-source.tar.gz` - source code archive (optional)
+
+### Building Individual Components
 
 ```bash
-make build          # CLI only
-make build-tauri    # Mac App only (includes dmg creation)
-make source-tar    # Source archive only
+make build          # Build CLI only
+make build-tauri    # Build Mac App only (includes dmg creation)
+make build-cross    # Build all cross-platform CLI binaries
+make source-tar     # Source archive only
 ```
