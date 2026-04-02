@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { 
   Package as PackageIcon,
   Target,
@@ -42,6 +42,89 @@ interface Component {
 interface Project {
   name: string
   path: string
+}
+
+// Custom Project Selector
+function ProjectSelector({ 
+  projects, 
+  selected, 
+  onSelect 
+}: { 
+  projects: Project[] 
+  selected: string | null
+  onSelect: (name: string | null) => void 
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [search, setSearch] = useState('')
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const filteredProjects = projects.filter(p => 
+    p.name.toLowerCase().includes(search.toLowerCase())
+  )
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center gap-1 px-2 py-1.5 text-sm font-medium rounded-md transition-all ${
+          isOpen 
+            ? 'bg-white text-gray-900 shadow-sm' 
+            : 'text-gray-600 hover:text-gray-900'
+        }`}
+      >
+        <span className="truncate max-w-24">{selected || 'Select project...'}</span>
+        <ChevronDown className={`w-3.5 h-3.5 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+          <div className="px-3 pb-2">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search projects..."
+              className="w-full px-3 py-1.5 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              autoFocus
+            />
+          </div>
+          <div className="max-h-48 overflow-y-auto">
+            <button
+              onClick={() => { onSelect(null); setIsOpen(false); setSearch('') }}
+              className={`w-full px-3 py-2 text-left text-sm flex items-center gap-2 hover:bg-gray-50 ${!selected ? 'text-blue-600 bg-blue-50' : 'text-gray-700'}`}
+            >
+              <span className="w-4">{!selected && <Check className="w-4 h-4" />}</span>
+              <span>Select project...</span>
+            </button>
+            {filteredProjects.map((proj) => (
+              <button
+                key={proj.name}
+                onClick={() => { onSelect(proj.name); setIsOpen(false); setSearch('') }}
+                className={`w-full px-3 py-2 text-left text-sm flex items-center gap-2 hover:bg-gray-50 ${selected === proj.name ? 'text-blue-600 bg-blue-50' : 'text-gray-700'}`}
+              >
+                <span className="w-4">{selected === proj.name && <Check className="w-4 h-4" />}</span>
+                <Folder className="w-4 h-4 text-gray-400" />
+                <span className="truncate">{proj.name}</span>
+              </button>
+            ))}
+            {filteredProjects.length === 0 && (
+              <div className="px-3 py-4 text-sm text-gray-400 text-center">No projects found</div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 function App() {
@@ -107,69 +190,8 @@ function App() {
       setPackages(packages)
     } catch (err) {
       console.error('Failed to fetch packages:', err)
-      // Fallback to mock data
-      const qoderPackages: Package[] = [
-        {
-          id: '1',
-          name: 'superpowers',
-          target: 'qoder',
-          version: 'v1.0.0',
-          installed: true,
-          installPath: '~/.qoder/skills/superpowers',
-          scope: 'user',
-          projectName: undefined,
-          installedAt: '2024-01-15 10:30',
-          components: [
-            { id: '1', name: 'brainstorming', type: 'skill', packageName: 'superpowers', installed: true, installPath: '~/.qoder/skills/superpowers/brainstorming', installedAt: '2024-01-15 10:30' },
-            { id: '2', name: 'writing-plans', type: 'skill', packageName: 'superpowers', installed: true, installPath: '~/.qoder/skills/superpowers/writing-plans', installedAt: '2024-01-15 10:30' },
-          ]
-        },
-        {
-          id: '2',
-          name: 'open-spec',
-          target: 'qoder',
-          version: 'v2.0.0',
-          installed: true,
-          installPath: '.qoder/skills/open-spec',
-          scope: 'project',
-          projectName: 'local-skill-hub',
-          installedAt: '2024-02-20 14:15',
-          components: [
-            { id: '5', name: 'api-design', type: 'skill', packageName: 'open-spec', installed: true, installPath: '.qoder/skills/open-spec/api-design', installedAt: '2024-02-20 14:15' },
-          ]
-        }
-      ]
-      
-      const cursorPackages: Package[] = [
-        {
-          id: '3',
-          name: 'cursor-tools',
-          target: 'cursor',
-          version: 'v1.5.0',
-          installed: true,
-          installPath: '~/.cursorrules/cursor-tools',
-          scope: 'user',
-          projectName: undefined,
-          installedAt: '2024-03-01 09:00',
-          components: [
-            { id: '7', name: 'cursor-skill', type: 'skill', packageName: 'cursor-tools', installed: true, installPath: '~/.cursorrules/cursor-tools/cursor-skill', installedAt: '2024-03-01 09:00' },
-          ]
-        }
-      ]
-      
-      let allPackages = target === 'qoder' ? qoderPackages : cursorPackages
-      
-      if (scope === 'user') {
-        allPackages = allPackages.filter(p => p.scope === 'user')
-      } else if (scope === 'project' && selectedProject) {
-        allPackages = allPackages.filter(p => 
-          p.scope === 'user' || (p.scope === 'project' && p.projectName === selectedProject)
-        )
-      } else if (scope === 'project' && !selectedProject) {
-        allPackages = allPackages.filter(p => p.scope === 'user')
-      }
-      
-      setPackages(allPackages)
+      // No fallback data - show empty state
+      setPackages([])
     }
     
     setLoading(false)
@@ -216,26 +238,15 @@ function App() {
               >
                 Project
               </button>
+              {/* Project Selector - integrated into segmented control */}
+              {scope === 'project' && (
+                <ProjectSelector
+                  projects={projects}
+                  selected={selectedProject}
+                  onSelect={setSelectedProject}
+                />
+              )}
             </div>
-            
-            {/* Project Selector (only show when scope is project) */}
-            {scope === 'project' && (
-              <div className="relative">
-                <select
-                  value={selectedProject || ''}
-                  onChange={(e) => setSelectedProject(e.target.value || null)}
-                  className="appearance-none pl-3 pr-8 py-1.5 text-sm font-medium rounded-lg border border-gray-200 bg-white cursor-pointer hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Select project...</option>
-                  {projects.map((proj) => (
-                    <option key={proj.name} value={proj.name}>
-                      {proj.name}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-              </div>
-            )}
             
             {/* IDE Selector - Segmented Control */}
             <div className="inline-flex rounded-lg border border-gray-200 bg-gray-100 p-1">
@@ -274,13 +285,13 @@ function App() {
           <div>
             <span className="font-medium text-blue-700">Qoder:</span>
             <code className="ml-2 px-2 py-1 bg-blue-100 rounded text-blue-800">
-               Fetch and follow instructions from http://localhost:27842/qoder/easy-skills.md
+               Fetch and follow instructions from http://localhost:27842/qoder/INSTALL.md
             </code>
           </div>
           <div>
             <span className="font-medium text-blue-700">Cursor:</span>
             <code className="ml-2 px-2 py-1 bg-blue-100 rounded text-blue-800">
-              Fetch and follow instructions from http://localhost:27842/cursor/easy-skills.md
+              Fetch and follow instructions from http://localhost:27842/cursor/INSTALL.md
             </code>
           </div>
         </div>

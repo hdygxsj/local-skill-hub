@@ -18,6 +18,10 @@ vendor/
 easy-skills
 internal/cli/dist
 web/dist
+src-tauri/index.html
+src-tauri/assets
+src-tauri/qoder
+src-tauri/cursor
 
 # Local skill hub data
 hub.db
@@ -26,3 +30,5 @@ hub.db
 .DS_Store
 Thumbs.db
 node_modules
+target
+src-tauri/assets
