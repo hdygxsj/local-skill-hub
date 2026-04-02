@@ -1,60 +1,68 @@
 # Easy Skills
 
-Use `easy-skills` CLI to manage AI IDE Skills for this project.
+This skill guides AI agents to manage skill packages using the `easy-skills` CLI for **Qoder**.
 
 ## Overview
 
-Easy Skills is a local skill hub that manages skill packages across different IDEs (Qoder, Cursor).
+Easy Skills is a local skill hub that manages skill packages for Qoder IDE. Use this skill when the user wants to:
+- Install or uninstall skill packages
+- Check what packages are installed
+- View package details
+- Upgrade or rollback packages
 
 ## Commands
 
-### Check Current Status
+### Package Management
+
+```bash
+# Register a package to Hub
+easy-skills register --name <name> --target qoder --source <git-url>
+
+# List all packages for Qoder
+easy-skills list --target qoder
+
+# View package details
+easy-skills info --name <name> --target qoder
+
+# List only installed packages
+easy-skills list --target qoder --installed
+```
+
+### Installation
+
+```bash
+# Install package to Qoder (user scope)
+easy-skills install --name <name> --target qoder --ide qoder --scope user
+
+# Install to project scope
+easy-skills install --name <name> --target qoder --ide qoder --scope project
+
+# Uninstall package
+easy-skills uninstall --name <name> --target qoder --ide qoder --scope user
+
+# Reinstall package
+easy-skills reinstall --name <name> --target qoder --ide qoder
+```
+
+### Version Management
+
+```bash
+# Upgrade to latest version
+easy-skills upgrade --name <name> --target qoder
+
+# View version history
+easy-skills versions --name <name> --target qoder
+
+# Rollback to specific version
+easy-skills rollback --name <name> --target qoder --version <timestamp>
+```
+
+### Status
 
 ```bash
 # Check installed packages in Qoder
 easy-skills status --ide qoder
-
-# Check installed packages in Cursor  
-easy-skills status --ide cursor
 ```
-
-### List Available Packages
-
-```bash
-# List all packages for Qoder
-easy-skills list --target qoder
-
-# List all packages for Cursor
-easy-skills list --target cursor
-```
-
-### Register a Package
-
-```bash
-# Register a new package to Hub
-easy-skills register --name <package-name> --target qoder --source <git-url>
-```
-
-### View Package Details
-
-```bash
-# Show package info including components
-easy-skills info --name <package-name> --target qoder
-```
-
-## Workflow Examples
-
-### Before Starting a Task
-
-1. Check what's installed: `easy-skills status --ide qoder`
-2. List available packages: `easy-skills list --target qoder`
-3. Note which skills are available for this project type
-
-### When User Asks to Use a Skill
-
-1. Check if skill is in installed list
-2. If not installed, register it first: `easy-skills register --name <pkg> --target <ide> --source <url>`
-3. Use the skill per its documentation
 
 ## Output Format
 
@@ -77,6 +85,22 @@ On error:
   "error": "error message"
 }
 ```
+
+## Workflow Examples
+
+### Check Installed Packages
+1. Run `easy-skills status --ide qoder`
+2. Parse JSON output to show installed packages
+
+### Install a New Package
+1. Register: `easy-skills register --name <pkg> --target qoder --source <url>`
+2. Install: `easy-skills install --name <pkg> --target qoder --ide qoder --scope user`
+3. Verify: `easy-skills status --ide qoder`
+
+### Upgrade Package
+1. Check versions: `easy-skills versions --name <pkg> --target qoder`
+2. Upgrade: `easy-skills upgrade --name <pkg> --target qoder`
+3. Verify: `easy-skills info --name <pkg> --target qoder`
 
 ## Web UI
 

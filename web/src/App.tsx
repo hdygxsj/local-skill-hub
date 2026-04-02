@@ -49,7 +49,7 @@ function App() {
   const [scope, setScope] = useState<'user' | 'project'>('user')
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
   const [projects, setProjects] = useState<Project[]>([])
-  const [view, setView] = useState<'packages' | 'skills'>('packages')
+  const [view, setView] = useState<'packages' | 'components'>('packages')
   const [packages, setPackages] = useState<Package[]>([])
   const [loading, setLoading] = useState(true)
   const [showHelp, setShowHelp] = useState(false)
@@ -300,9 +300,9 @@ function App() {
             Packages
           </button>
           <button
-            onClick={() => setView('skills')}
+            onClick={() => setView('components')}
             className={`py-3 px-1 border-b-2 font-medium ${
-              view === 'skills'
+              view === 'components'
                 ? 'border-primary text-primary'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
@@ -655,6 +655,27 @@ function App() {
                   </p>
                 </section>
 
+                {/* Manage via AI */}
+                <section>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Bot className="w-5 h-5 text-purple-500" />
+                    Manage via AI
+                  </h3>
+                  <p className="text-gray-600 mb-3">
+                    Tell AI Agent to manage skills:
+                  </p>
+                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-2">
+                    <p className="text-gray-500"># Check installed packages</p>
+                    <p className="text-purple-600">/easy-skills list installed packages</p>
+                    <p className="text-gray-500 mt-2"># View package details</p>
+                    <p className="text-purple-600">/easy-skills show details for superpowers</p>
+                    <p className="text-gray-500 mt-2"># Switch IDE target</p>
+                    <p className="text-purple-600">/easy-skills change target to cursor</p>
+                    <p className="text-gray-500 mt-2"># Check installation status</p>
+                    <p className="text-purple-600">/easy-skills status --ide qoder</p>
+                  </div>
+                </section>
+
                 {/* View Packages */}
                 <section>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
@@ -669,7 +690,7 @@ function App() {
                 {/* Web GUI */}
                 <section>
                   <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <Bot className="w-5 h-5 text-purple-500" />
+                    <Anchor className="w-5 h-5 text-orange-500" />
                     Start GUI
                   </h3>
                   <p className="text-gray-600 mb-3">
@@ -677,7 +698,7 @@ function App() {
                   </p>
                   <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
                     <p className="text-gray-500"># Start GUI server</p>
-                    <p className="text-purple-600">easy-skills serve</p>
+                    <p className="text-orange-600">easy-skills serve</p>
                     <p className="text-gray-500"># Open http://localhost:27842</p>
                   </div>
                 </section>
