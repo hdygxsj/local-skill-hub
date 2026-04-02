@@ -10,7 +10,9 @@ import {
   Folder,
   FolderOpen,
   Clock,
-  ChevronDown
+  ChevronDown,
+  HelpCircle,
+  X
 } from 'lucide-react'
 
 interface Package {
@@ -50,6 +52,7 @@ function App() {
   const [view, setView] = useState<'packages' | 'components'>('packages')
   const [packages, setPackages] = useState<Package[]>([])
   const [loading, setLoading] = useState(true)
+  const [showHelp, setShowHelp] = useState(false)
 
   useEffect(() => {
     fetchProjects()
@@ -177,7 +180,16 @@ function App() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Easy Skills Hub</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-gray-900">Easy Skills Hub</h1>
+            <button
+              onClick={() => setShowHelp(true)}
+              className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              title="How to use"
+            >
+              <HelpCircle className="w-5 h-5" />
+            </button>
+          </div>
           <div className="flex items-center gap-4">
             {/* Scope Selector */}
             <div className="inline-flex rounded-lg border border-gray-200 bg-gray-100 p-1">
@@ -608,6 +620,118 @@ function App() {
           </div>
         )}
       </main>
+
+      {/* Help Modal */}
+      {showHelp && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">How to Use Skills</h2>
+              <button
+                onClick={() => setShowHelp(false)}
+                className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto max-h-[calc(80vh-72px)]">
+              <div className="space-y-6">
+                {/* Install Skills */}
+                <section>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <PackageIcon className="w-5 h-5 text-blue-500" />
+                    Install Skills
+                  </h3>
+                  <p className="text-gray-600 mb-3">
+                    Ask AI Agent to install skills from Easy Skills Hub:
+                  </p>
+                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm space-y-1">
+                    <p className="text-gray-500"># Install a skill to Qoder</p>
+                    <p className="text-purple-600">Fetch and follow instructions from https://raw.githubusercontent.com/hdygxsj/superpowers/refs/heads/main/.qoder/INSTALL.md</p>
+                  </div>
+                  <p className="text-gray-500 text-sm mt-2">
+                    This will install the skill to your IDE and register it in the Skill Hub.
+                  </p>
+                </section>
+
+                {/* Skill Types */}
+                <section>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Target className="w-5 h-5 text-green-500" />
+                    Skill
+                  </h3>
+                  <p className="text-gray-600 mb-3">
+                    Skills provide specialized capabilities. Use them by mentioning their name:
+                  </p>
+                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm">
+                    <p className="text-gray-500"># Activate a skill</p>
+                    <p className="text-green-600">/brainstorming</p>
+                    <p className="text-gray-500 mt-2"># Or let AI Agent know what you need</p>
+                    <p className="text-green-600">"I need help with project planning"</p>
+                  </div>
+                </section>
+
+                {/* Agent */}
+                <section>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Bot className="w-5 h-5 text-purple-500" />
+                    Agent
+                  </h3>
+                  <p className="text-gray-600 mb-3">
+                    Agents are specialized AI subagents for specific tasks:
+                  </p>
+                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm">
+                    <p className="text-gray-500"># AI Agent will automatically use agents</p>
+                    <p className="text-purple-600">"Review this code for security issues"</p>
+                  </div>
+                </section>
+
+                {/* Hook */}
+                <section>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Anchor className="w-5 h-5 text-orange-500" />
+                    Hook
+                  </h3>
+                  <p className="text-gray-600 mb-3">
+                    Hooks automatically run at specific points (e.g., before commit):
+                  </p>
+                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm">
+                    <p className="text-gray-500"># Hooks run automatically</p>
+                    <p className="text-orange-600">git commit -m "fix: resolve issue"</p>
+                    <p className="text-gray-500 mt-1">→ pre-commit hook runs automatically</p>
+                  </div>
+                </section>
+
+                {/* Rule */}
+                <section>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Ruler className="w-5 h-5 text-red-500" />
+                    Rule
+                  </h3>
+                  <p className="text-gray-600 mb-3">
+                    Rules define coding standards and best practices:
+                  </p>
+                  <div className="bg-gray-100 rounded-lg p-3 font-mono text-sm">
+                    <p className="text-gray-500"># Rules are applied automatically</p>
+                    <p className="text-red-600">"Write a React component"</p>
+                    <p className="text-gray-500 mt-1">→ AI follows TypeScript rules automatically</p>
+                  </div>
+                </section>
+
+                {/* More Info */}
+                <section className="pt-4 border-t border-gray-200">
+                  <p className="text-gray-500 text-sm">
+                    For more information, see the{' '}
+                    <a href="https://github.com/hdygxsj/easy-skills" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                      Easy Skills documentation
+                    </a>
+                  </p>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
