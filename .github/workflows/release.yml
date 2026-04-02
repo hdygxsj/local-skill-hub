@@ -37,21 +37,21 @@ jobs:
       - name: Build CLI
         run: |
           mkdir -p releases/bin
-          GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o releases/bin/easy-skills ./cmd/easy-skills
+          GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o releases/bin/easy-skills-cli-macos-aarch64 ./cmd/easy-skills
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           draft: false
           prerelease: false
-          files: releases/bin/easy-skills
+          files: releases/bin/easy-skills-cli-macos-aarch64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare npm package
         run: |
           mkdir -p npm/bin
-          cp releases/bin/easy-skills npm/bin/
+          cp releases/bin/easy-skills-cli-macos-aarch64 npm/bin/easy-skills
           chmod +x npm/bin/easy-skills
 
       - name: Publish npm
