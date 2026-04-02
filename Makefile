@@ -23,6 +23,7 @@ build-cli:
 build-web:
 	cd web && npm run build
 	cp -r web/dist internal/cli/dist
+	cp -r skills internal/cli/dist/
 
 # Clean build artifacts
 clean:
@@ -55,6 +56,7 @@ install:
 build-tauri:
 	@echo "Copying web assets for Tauri..."
 	cp -r web/dist src-tauri/assets
+	cp -r skills src-tauri/assets/
 	cd src-tauri && cargo tauri build
 	@echo "Copying frontend assets to app bundle..."
 	cp -r src-tauri/assets/* "src-tauri/target/release/bundle/macos/Easy Skills.app/Contents/Resources/"
