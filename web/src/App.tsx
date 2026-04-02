@@ -36,36 +36,53 @@ function App() {
 
   const fetchPackages = async () => {
     setLoading(true)
-    // TODO: Replace with actual API call
-    // For now, show sample data with type classification
-    setPackages([
+    
+    // Simulate API call with different data based on target
+    const qoderPackages = [
       {
         name: 'superpowers',
-        target: target,
+        target: 'qoder',
         version: 'v1.0.0',
         components: [
           { id: '1', name: 'brainstorming', type: 'skill', packageName: 'superpowers' },
           { id: '2', name: 'writing-plans', type: 'skill', packageName: 'superpowers' },
           { id: '3', name: 'test-driven-development', type: 'skill', packageName: 'superpowers' },
-          { id: '4', name: 'systematic-debugging', type: 'skill', packageName: 'superpowers' },
-          { id: '5', name: 'verification-before-completion', type: 'skill', packageName: 'superpowers' },
-          { id: '6', name: 'subagent-driven-dev', type: 'agent', packageName: 'superpowers' },
-          { id: '7', name: 'team-driven-development', type: 'agent', packageName: 'superpowers' },
-          { id: '8', name: 'code-quality-checker', type: 'agent', packageName: 'superpowers' },
+          { id: '4', name: 'subagent-driven-dev', type: 'agent', packageName: 'superpowers' },
         ]
       },
       {
         name: 'open-spec',
-        target: target,
+        target: 'qoder',
         version: 'v2.0.0',
         components: [
-          { id: '9', name: 'api-design', type: 'skill', packageName: 'open-spec' },
-          { id: '10', name: 'db-schema', type: 'skill', packageName: 'open-spec' },
-          { id: '11', name: 'test-gen', type: 'skill', packageName: 'open-spec' },
-          { id: '12', name: 'typescript-rules', type: 'rule', packageName: 'open-spec' },
+          { id: '5', name: 'api-design', type: 'skill', packageName: 'open-spec' },
+          { id: '6', name: 'typescript-rules', type: 'rule', packageName: 'open-spec' },
         ]
       }
-    ])
+    ]
+    
+    const cursorPackages = [
+      {
+        name: 'cursor-tools',
+        target: 'cursor',
+        version: 'v1.5.0',
+        components: [
+          { id: '7', name: 'cursor-skill', type: 'skill', packageName: 'cursor-tools' },
+          { id: '8', name: 'cursor-agent', type: 'agent', packageName: 'cursor-tools' },
+        ]
+      },
+      {
+        name: 'superpowers',
+        target: 'cursor',
+        version: 'v1.0.0',
+        components: [
+          { id: '9', name: 'brainstorming', type: 'skill', packageName: 'superpowers' },
+          { id: '10', name: 'verification', type: 'skill', packageName: 'superpowers' },
+        ]
+      }
+    ]
+    
+    setPackages(target === 'qoder' ? qoderPackages : cursorPackages)
     setLoading(false)
   }
 
