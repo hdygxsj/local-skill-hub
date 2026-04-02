@@ -1,4 +1,13 @@
 import { useState, useEffect } from 'react'
+import { 
+  Package,          // 📦
+  Target,           // 🎯
+  Bot,              // 🤖
+  Ruler,            // 📐
+  Anchor,           // 🪝 (hook)
+  Check,            // ✓
+  Loader2           // Loading
+} from 'lucide-react'
 
 interface Package {
   id: string
@@ -79,7 +88,10 @@ function App() {
 
       {/* Install Guide Banner */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg m-6 p-4">
-        <h2 className="text-lg font-semibold text-blue-900 mb-2">📦 Install Easy Skills in Your AI IDE</h2>
+        <h2 className="text-lg font-semibold text-blue-900 mb-2 flex items-center gap-2">
+          <Package className="w-5 h-5" />
+          Install Easy Skills in Your AI IDE
+        </h2>
         <div className="space-y-2 text-sm">
           <div>
             <span className="font-medium text-blue-700">Qoder:</span>
@@ -125,7 +137,10 @@ function App() {
       {/* Content */}
       <main className="p-6">
         {loading ? (
-          <div className="text-center py-12 text-gray-500">Loading...</div>
+          <div className="text-center py-12 text-gray-500 flex flex-col items-center gap-2">
+            <Loader2 className="w-8 h-8 animate-spin" />
+            <span>Loading...</span>
+          </div>
         ) : view === 'components' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {packages.map((pkg) => (
@@ -134,8 +149,9 @@ function App() {
                 <p className="text-sm text-gray-500 mt-1">{pkg.version}</p>
                 <p className="text-sm text-gray-600 mt-2">{pkg.components.length} components</p>
                 <div className="mt-3 flex gap-2">
-                  <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">
-                    ✓ Installed
+                  <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded flex items-center gap-1">
+                    <Check className="w-3 h-3" />
+                    Installed
                   </span>
                 </div>
               </div>
@@ -147,7 +163,8 @@ function App() {
             <div className="border border-gray-200 rounded-lg overflow-hidden">
               <div className="bg-blue-50 px-4 py-3 border-b border-gray-200">
                 <h3 className="font-semibold text-blue-800 flex items-center gap-2">
-                  🎯 Skills
+                  <Target className="w-4 h-4" />
+                  Skills
                   <span className="text-sm text-blue-500 font-normal">(from packages)</span>
                 </h3>
               </div>
@@ -174,7 +191,8 @@ function App() {
             <div className="border border-gray-200 rounded-lg overflow-hidden">
               <div className="bg-purple-50 px-4 py-3 border-b border-gray-200">
                 <h3 className="font-semibold text-purple-800 flex items-center gap-2">
-                  🤖 Agents
+                  <Bot className="w-4 h-4" />
+                  Agents
                   <span className="text-sm text-purple-500 font-normal">(from packages)</span>
                 </h3>
               </div>
@@ -201,7 +219,8 @@ function App() {
             <div className="border border-gray-200 rounded-lg overflow-hidden">
               <div className="bg-orange-50 px-4 py-3 border-b border-gray-200">
                 <h3 className="font-semibold text-orange-800 flex items-center gap-2">
-                  📐 Rules
+                  <Ruler className="w-4 h-4" />
+                  Rules
                   <span className="text-sm text-orange-500 font-normal">(from packages)</span>
                 </h3>
               </div>
@@ -228,7 +247,8 @@ function App() {
             <div className="border border-gray-200 rounded-lg overflow-hidden">
               <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
                 <h3 className="font-semibold text-gray-700 flex items-center gap-2">
-                  🪝 Hooks
+                  <Anchor className="w-4 h-4" />
+                  Hooks
                   <span className="text-sm text-gray-500 font-normal">(from packages)</span>
                 </h3>
               </div>
