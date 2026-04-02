@@ -68,8 +68,9 @@ On error:
 ### Release Targets
 
 **Only publish these to GitHub Releases:**
-1. **macOS ARM64 binary** - `easy-skills-macos-aarch64`
-2. **npm package** - CLI via `npm publish`
+1. **macOS ARM64 CLI** - `easy-skills-cli-macos-aarch64`
+2. **macOS ARM64 App** - `Easy Skills_X.Y.Z_aarch64.dmg`
+3. **npm package** - CLI via `npm publish`
 
 > Note: Users on other platforms can install via `npm install -g easy-skills-cli`
 
@@ -82,7 +83,9 @@ make build-cross
 # 2. Upload to GitHub Releases
 # - Go to https://github.com/hdygxsj/easy-skills/releases/new
 # - Create tag vX.Y.Z
-# - Upload: easy-skills-macos-aarch64
+# - Upload:
+#   - easy-skills-cli-macos-aarch64 (CLI binary)
+#   - Easy Skills_X.Y.Z_aarch64.dmg (Mac App)
 
 # 3. Publish CLI to npm
 cd npm
@@ -91,8 +94,9 @@ npm publish --access public
 
 ### GitHub Release Assets
 
-Upload only:
-- `easy-skills-macos-aarch64` (macOS ARM64 binary for npm to download)
+Upload these:
+- `easy-skills-cli-macos-aarch64` (macOS ARM64 CLI binary)
+- `Easy Skills_X.Y.Z_aarch64.dmg` (macOS ARM64 Mac App installer)
 
 ### npm Package
 
