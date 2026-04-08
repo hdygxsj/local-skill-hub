@@ -11,21 +11,26 @@ This skill guides AI agents to manage skill packages using the `easy-skills` CLI
 
 **When installing ANY skill/package to Qoder (whether from Git URL, local files, or any source), you MUST:**
 
-1. **Register** the package to easy-skills hub via `easy-skills register`
-2. **Verify** it was registered via `easy-skills list --target qoder`
+1. **Select correct target** - Use `--target qoder` for Qoder IDE
+2. **Register** the package to easy-skills hub via `easy-skills register`
+3. **Register components** - After registering package, use `easy-skills register-components` to register all components
+4. **Verify** registration via `easy-skills list --target qoder` and `easy-skills info --name <name> --target qoder`
 
 This ensures all installed skills are tracked and visible in the Easy Skills Hub.
 
 ### Example: Installing a skill from Git
 
 ```bash
-# Step 1: Register the package to Hub
+# Step 1: Register the package to Hub (MUST use --target qoder)
 easy-skills register --name superpowers --target qoder --source https://github.com/obra/superpowers
 
-# Step 2: Verify registration
-easy-skills list --target qoder
+# Step 2: Register all components from the package
+easy-skills register-components --name superpowers --target qoder
 
-# Step 3: Copy skill files to Qoder skills directory
+# Step 3: Verify registration
+easy-skills info --name superpowers --target qoder
+
+# Step 4: Copy skill files to Qoder skills directory
 # User scope: ~/.qoder/skills/<skill-name>/
 # Project scope: .qoder/skills/<skill-name>/
 ```
@@ -34,10 +39,13 @@ easy-skills list --target qoder
 
 1. Find the source (Git URL or local path)
 2. Run `easy-skills register --name <name> --target qoder --source <url>`
-3. Copy skill files to `~/.qoder/skills/<name>/`
-4. Verify: `easy-skills status --ide qoder`
+3. Run `easy-skills register-components --name <name> --target qoder`
+4. Copy skill files to `~/.qoder/skills/<name>/`
+5. Verify: `easy-skills info --name <name> --target qoder`
 
 **DO NOT** install skills by only copying files without registering to easy-skills.
+
+**IMPORTANT:** Always use `--target qoder` when working with Qoder IDE. Using `--target cursor` or other targets is incorrect.
 
 ## Overview
 
@@ -56,6 +64,9 @@ Easy Skills is a local skill hub that manages skill packages for Qoder IDE. Use 
 ```bash
 # Register a package to Hub
 easy-skills register --name <name> --target qoder --source <git-url>
+
+# Register all components from the package source
+easy-skills register-components --name <name> --target qoder
 ```
 
 ### List Packages

@@ -26,15 +26,26 @@ easy-skills list --target qoder
 ### Register a Package
 
 ```bash
-# Register a package from Git URL
+# IMPORTANT: Select correct target based on the IDE you're working with
+# For Qoder: use --target qoder
 easy-skills register --name superpowers --target qoder --source https://github.com/obra/superpowers
+
+# For Cursor: use --target cursor
+easy-skills register --name superpowers --target cursor --source https://github.com/obra/superpowers
+
+# After registering package, also register components
+easy-skills register-components --name superpowers --target <qoder|cursor>
 ```
+
+**⚠️ CRITICAL:** Always use the correct `--target` value:
+- `--target qoder` for Qoder IDE
+- `--target cursor` for Cursor IDE
 
 ### View Package Details
 
 ```bash
 # Show package info including components
-easy-skills info --name superpowers --target qoder
+easy-skills info --name superpowers --target <qoder|cursor>
 ```
 
 ## Web Interface
