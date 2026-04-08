@@ -4,17 +4,7 @@
 
 Choose one of these methods:
 
-### Option A: CLI Binary
-```bash
-# Download the latest release
-curl -L https://github.com/hdygxsj/easy-skills/releases/latest/download/easy-skills -o ~/Downloads/easy-skills
-
-# Make it executable and install
-chmod +x ~/Downloads/easy-skills
-mv ~/Downloads/easy-skills /usr/local/bin/easy-skills/SKILL.md
-```
-
-### Option B: Via npm
+### Option A: Via npm
 ```bash
 npm install -g easy-skills-cli
 ```
