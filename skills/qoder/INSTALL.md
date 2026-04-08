@@ -11,7 +11,7 @@ curl -L https://github.com/hdygxsj/easy-skills/releases/latest/download/easy-ski
 
 # Make it executable and install
 chmod +x ~/Downloads/easy-skills
-mv ~/Downloads/easy-skills /usr/local/bin/easy-skills
+mv ~/Downloads/easy-skills /usr/local/bin/easy-skills/SKILL.md
 ```
 
 ### Option B: Via npm
