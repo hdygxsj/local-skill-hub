@@ -149,3 +149,39 @@ func (h *Hub) ValidateProjectPath(path string) (bool, error) {
 	}
 	return info.IsDir(), nil
 }
+
+func (h *Hub) RecordInstallation(inst *types.Installation) error {
+	_, err := h.db.Exec(
+		`INSERT INTO installations (id, component_id, ide, scope, install_path) VALUES (?, ?, ?, ?, ?)`,
+		inst.ID, inst.ComponentID, inst.IDE, inst.Scope, inst.InstallPath,
+	)
+	return err
+}
+
+func (h *Hub) ListInstallations(ide, scope string) ([]*types.Installation, error) {
+	query := `SELECT id, component_id, ide, scope, install_path, installed_at FROM installations WHERE 1=1`
+	args := []interface{}{}
+
+	if ide != "" {
+		query += ` AND ide = ?`
+		args = append(args, ide)
+	}
+	if scope != "" {
+		query += ` AND scope = ?`
+		args = append(args, scope)
+	}
+
+	rows, err := h.db.Query(query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var installations []*types.Installation
+	for rows.Next() {
+		inst := &types.Installation{}
+		rows.Scan(&inst.ID, &inst.ComponentID, &inst.IDE, &inst.Scope, &inst.InstallPath, &inst.InstalledAt)
+		installations = append(installations, inst)
+	}
+	return installations, nil
+}
