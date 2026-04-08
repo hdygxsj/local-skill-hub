@@ -1,11 +1,43 @@
 ---
 name: easy-skills
-description: Manage skill packages for Cursor IDE - register, install, uninstall packages
+description: Manage skill packages for Cursor IDE - register, install, uninstall packages. When installing ANY skill to Cursor, you MUST register it to easy-skills hub.
 ---
 
 # Easy Skills
 
 This skill guides AI agents to manage skill packages using the `easy-skills` CLI for **Cursor**.
+
+## IMPORTANT: Skill Installation Rule
+
+**When installing ANY skill/package to Cursor (whether from Git URL, local files, or any source), you MUST:**
+
+1. **Register** the package to easy-skills hub via `easy-skills register`
+2. **Verify** it was registered via `easy-skills list --target cursor`
+
+This ensures all installed skills are tracked and visible in the Easy Skills Hub.
+
+### Example: Installing a skill from Git
+
+```bash
+# Step 1: Register the package to Hub
+easy-skills register --name superpowers --target cursor --source https://github.com/obra/superpowers
+
+# Step 2: Verify registration
+easy-skills list --target cursor
+
+# Step 3: Copy skill files to Cursor rules directory
+# User scope: ~/.cursorrules/<skill-name>/
+# Project scope: .cursorrules/<skill-name>/
+```
+
+### Example: User says "install X skill"
+
+1. Find the source (Git URL or local path)
+2. Run `easy-skills register --name <name> --target cursor --source <url>`
+3. Copy skill files to `~/.cursorrules/<name>/`
+4. Verify: `easy-skills status --ide cursor`
+
+**DO NOT** install skills by only copying files without registering to easy-skills.
 
 ## Overview
 
@@ -100,21 +132,6 @@ On error:
   "error": "error message"
 }
 ```
-
-## Workflow Examples
-
-### Check Installed Packages
-1. Run `easy-skills status --ide cursor`
-2. Parse JSON output to show installed packages
-
-### Install a Package
-1. Register: `easy-skills register --name <pkg> --target cursor --source <url>`
-2. Install: `easy-skills install --name <pkg> --target cursor --ide cursor --scope user`
-3. Verify: `easy-skills status --ide cursor`
-
-### Uninstall a Package
-1. Run `easy-skills uninstall --name <pkg> --target cursor --ide cursor --scope user`
-2. Verify: `easy-skills status --ide cursor`
 
 ## Web UI
 

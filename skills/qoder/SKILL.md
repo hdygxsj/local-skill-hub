@@ -1,11 +1,43 @@
 ---
 name: easy-skills
-description: Manage skill packages for Qoder IDE - register, install, uninstall packages
+description: Manage skill packages for Qoder IDE - register, install, uninstall packages. When installing ANY skill to Qoder, you MUST register it to easy-skills hub.
 ---
 
 # Easy Skills
 
 This skill guides AI agents to manage skill packages using the `easy-skills` CLI for **Qoder**.
+
+## IMPORTANT: Skill Installation Rule
+
+**When installing ANY skill/package to Qoder (whether from Git URL, local files, or any source), you MUST:**
+
+1. **Register** the package to easy-skills hub via `easy-skills register`
+2. **Verify** it was registered via `easy-skills list --target qoder`
+
+This ensures all installed skills are tracked and visible in the Easy Skills Hub.
+
+### Example: Installing a skill from Git
+
+```bash
+# Step 1: Register the package to Hub
+easy-skills register --name superpowers --target qoder --source https://github.com/obra/superpowers
+
+# Step 2: Verify registration
+easy-skills list --target qoder
+
+# Step 3: Copy skill files to Qoder skills directory
+# User scope: ~/.qoder/skills/<skill-name>/
+# Project scope: .qoder/skills/<skill-name>/
+```
+
+### Example: User says "install X skill"
+
+1. Find the source (Git URL or local path)
+2. Run `easy-skills register --name <name> --target qoder --source <url>`
+3. Copy skill files to `~/.qoder/skills/<name>/`
+4. Verify: `easy-skills status --ide qoder`
+
+**DO NOT** install skills by only copying files without registering to easy-skills.
 
 ## Overview
 
@@ -100,21 +132,6 @@ On error:
   "error": "error message"
 }
 ```
-
-## Workflow Examples
-
-### Check Installed Packages
-1. Run `easy-skills status --ide qoder`
-2. Parse JSON output to show installed packages
-
-### Install a Package
-1. Register: `easy-skills register --name <pkg> --target qoder --source <url>`
-2. Install: `easy-skills install --name <pkg> --target qoder --ide qoder --scope user`
-3. Verify: `easy-skills status --ide qoder`
-
-### Uninstall a Package
-1. Run `easy-skills uninstall --name <pkg> --target qoder --ide qoder --scope user`
-2. Verify: `easy-skills status --ide qoder`
 
 ## Web UI
 
