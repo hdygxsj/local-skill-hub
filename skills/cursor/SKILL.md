@@ -1,3 +1,8 @@
+---
+name: easy-skills
+description: Manage skill packages for Cursor IDE - register, install, uninstall packages
+---
+
 # Easy Skills
 
 This skill guides AI agents to manage skill packages using the `easy-skills` CLI for **Cursor**.
