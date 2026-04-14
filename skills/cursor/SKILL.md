@@ -34,9 +34,11 @@ This rule applies to:
 **When installing ANY skill/package to Cursor, you MUST:**
 
 1. Use `--target cursor` for Cursor IDE
-2. Clone/copy skill files to `~/.easy-skills/packages/<name>/`
-3. Register: `easy-skills register --name <name> --target cursor --source ~/.easy-skills/packages/<name>`
-4. Install: `easy-skills install --name <name> --target cursor --ide cursor --scope user`
+2. **For project scope**: Check if project is registered via `easy-skills project list`
+   - If not registered: `easy-skills project add --name <project-name> --path <path>`
+3. Clone/copy skill files to `~/.easy-skills/packages/<name>/`
+4. Register: `easy-skills register --name <name> --target cursor --source ~/.easy-skills/packages/<name>`
+5. Install: `easy-skills install --name <name> --target cursor --ide cursor --scope <user|project>`
 
 ### Hub Cache Directory
 
