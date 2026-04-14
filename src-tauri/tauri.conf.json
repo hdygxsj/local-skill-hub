@@ -1,7 +1,7 @@
 {
   "$schema": "https://v2.tauri.app/schemas/desktop-schema.json",
   "productName": "Easy Skills",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "identifier": "com.easy-skills.hub",
   "build": {
     "beforeDevCommand": "cd ../web && npm run dev",

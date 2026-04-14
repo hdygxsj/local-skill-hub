@@ -1,6 +1,6 @@
 {
   "name": "easy-skills-cli",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Easy Skills Hub CLI - Local Skill Hub for AI IDEs",
   "keywords": ["skills", "ai", "ide", "plugins", "extensions"],
   "homepage": "https://github.com/hdygxsj/easy-skills",
